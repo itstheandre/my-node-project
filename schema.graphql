@@ -2,19 +2,25 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Messages {
-  id: ID!
-  description: String!
-}
-
 type UserModel {
   id: ID!
   username: String!
 }
 
+type Messages {
+  id: ID!
+  user: UserModel!
+  description: String!
+}
+
+type LoginReturnType {
+  id: ID!
+  username: String!
+  accessToken: String!
+}
+
 type Query {
   messages: [Messages!]!
-  getContext: String!
   users: [UserModel!]!
 }
 
@@ -23,6 +29,7 @@ type Mutation {
   updateMessage(updateMessage: UpdateMessageDto!): Messages!
   deleteAllMessages: String!
   createUser(createUser: CreateUserDto!): UserModel!
+  login(input: CreateUserDto!): LoginReturnType!
 }
 
 input CreateMessageDto {
