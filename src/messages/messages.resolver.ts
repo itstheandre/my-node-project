@@ -6,6 +6,7 @@ import { MessagesService } from './messages.service';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from 'src/auth/Gql.guard';
 import { CurrentUser } from 'src/auth/CurrentUser';
+import { UserModel } from 'src/user/user.model';
 
 @Resolver(() => Messages)
 export class MessagesResolver {
@@ -23,7 +24,14 @@ export class MessagesResolver {
   }
 
   @Mutation(() => Messages)
-  createMessage(@Args('createTask') createMessage: CreateMessageDto) {
+  @UseGuards(GqlAuthGuard)
+  createMessage(
+    @CurrentUser() user: UserModel,
+    @Args('createTask') createMessage: CreateMessageDto,
+  ) {
+    console.log('creating message, here is user:', user);
+
+    // TODO: messagesService.createMessage should take in user as parameter?
     return this.messagesService.createMessage(createMessage);
   }
 
@@ -35,12 +43,5 @@ export class MessagesResolver {
   @Mutation(() => String)
   deleteAllMessages() {
     return this.messagesService.deleteAllMessages();
-  }
-
-  @Query(() => String)
-  @UseGuards(GqlAuthGuard)
-  getContext(@CurrentUser() user: any) {
-    console.log('user:', user);
-    return 'je;;p';
   }
 }

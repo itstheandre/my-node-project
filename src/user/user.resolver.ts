@@ -16,10 +16,13 @@ export class UserResolver {
     return this.userService.getAllUsers();
   }
 
+  // TODO: move this to AuthResolver as signup
   @Mutation(() => UserModel)
   createUser(@Args('createUser') createUser: CreateUserDto) {
     return this.userService.createUser(createUser);
   }
+
+  // TODO: MeQuery already has token  - send back user info
 
   // @Mutation(() => UserModel)
   // createUser(@Args() createUser: CreateUserDto): Promise<UserModel> {
